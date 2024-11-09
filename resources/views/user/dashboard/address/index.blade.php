@@ -1,0 +1,49 @@
+@extends('user.dashboard.layouts.master')
+
+@section('content')
+
+      <div class="row">
+        <div class="col-xl-9 col-xxl-10 col-lg-9 ms-auto">
+          <div class="dashboard_content">
+            <h3><i class="fal fa-gift-card"></i> address</h3>
+            <div class="wsus__dashboard_add">
+              <div class="row">
+                @foreach ($addresses as $address)
+                    
+                <div class="col-xl-6">
+                  <div class="wsus__dash_add_single">
+                    <h4>Billing Address <span>{{ $address->address_type }}</span></h4>
+                    <ul>
+                      <li><span>name :</span> {{ $address->name }}</li>
+                      <li><span>Phone :</span> {{ $address->phone }}</li>
+                      <li><span>email :</span> {{ $address->email }}</li>
+                      <li><span>province :</span> {{ $address->province }}</li>
+                      <li><span>district :</span> {{ $address->district }}</li>
+                      <li><span>ward :</span> {{ $address->ward }}</li>
+                      <li><span>zip code :</span> {{ $address->zip }}</li>
+                      <li ><span>specific address :</span> {{ $address->specific_address }}</li>
+                    </ul>
+                    <div class="wsus__address_btn">
+                      <a href="{{ route('user.address.edit',$address->id) }}" class="edit"><i class="fal fa-edit"></i> edit</a>
+                      <form action="{{ route('user.address.destroy',$address->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button style="background-color: #08C; height:31px;border: none;;color:white;width:230px" href="{{ route('user.address.destroy',$address->id) }}" ><i class="fal fa-trash-alt"></i> Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                @endforeach
+               
+                <div class="col-12">
+                  <a href="{{ route('user.address.create') }}" class="add_address_btn common_btn"><i class="far fa-plus"></i>
+                    add new address</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+@endsection

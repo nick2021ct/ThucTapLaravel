@@ -1,0 +1,133 @@
+{
+    "error": 0,
+    "error_text": "Lấy dữ liệu phường xã thành công..!",
+    "data_name": "Quận Ba Đình",
+    "data": [
+      {
+        "id": "00007",
+        "name": "Cống Vị",
+        "name_en": "Cong Vi",
+        "full_name": "Phường Cống Vị",
+        "full_name_en": "Cong Vi Ward",
+        "latitude": "21.0350399",
+        "longitude": "105.8101844"
+      },
+      {
+        "id": "00031",
+        "name": "Giảng Võ",
+        "name_en": "Giang Vo",
+        "full_name": "Phường Giảng Võ",
+        "full_name_en": "Giang Vo Ward",
+        "latitude": "21.0269451",
+        "longitude": "105.8180198"
+      },
+      {
+        "id": "00028",
+        "name": "Kim Mã",
+        "name_en": "Kim Ma",
+        "full_name": "Phường Kim Mã",
+        "full_name_en": "Kim Ma Ward",
+        "latitude": "21.0314542",
+        "longitude": "105.8249046"
+      },
+      {
+        "id": "00008",
+        "name": "Liễu Giai",
+        "name_en": "Lieu Giai",
+        "full_name": "Phường Liễu Giai",
+        "full_name_en": "Lieu Giai Ward",
+        "latitude": "21.0375836",
+        "longitude": "105.8174205"
+      },
+      {
+        "id": "00016",
+        "name": "Ngọc Hà",
+        "name_en": "Ngoc Ha",
+        "full_name": "Phường Ngọc Hà",
+        "full_name_en": "Ngoc Ha Ward",
+        "latitude": "21.0385",
+        "longitude": "105.8250869"
+      },
+      {
+        "id": "00025",
+        "name": "Ngọc Khánh",
+        "name_en": "Ngoc Khanh",
+        "full_name": "Phường Ngọc Khánh",
+        "full_name_en": "Ngoc Khanh Ward",
+        "latitude": "21.0296494",
+        "longitude": "105.810283"
+      },
+      {
+        "id": "00010",
+        "name": "Nguyễn Trung Trực",
+        "name_en": "Nguyen Trung Truc",
+        "full_name": "Phường Nguyễn Trung Trực",
+        "full_name_en": "Nguyen Trung Truc Ward",
+        "latitude": "21.0419431",
+        "longitude": "105.8472242"
+      },
+      {
+        "id": "00001",
+        "name": "Phúc Xá",
+        "name_en": "Phuc Xa",
+        "full_name": "Phường Phúc Xá",
+        "full_name_en": "Phuc Xa Ward",
+        "latitude": "21.0456942",
+        "longitude": "105.8482503"
+      },
+      {
+        "id": "00013",
+        "name": "Quán Thánh",
+        "name_en": "Quan Thanh",
+        "full_name": "Phường Quán Thánh",
+        "full_name_en": "Quan Thanh Ward",
+        "latitude": "21.0415304",
+        "longitude": "105.8414121"
+      },
+      {
+        "id": "00034",
+        "name": "Thành Công",
+        "name_en": "Thanh Cong",
+        "full_name": "Phường Thành Công",
+        "full_name_en": "Thanh Cong Ward",
+        "latitude": "21.0205111",
+        "longitude": "105.8152857"
+      },
+      {
+        "id": "00004",
+        "name": "Trúc Bạch",
+        "name_en": "Truc Bach",
+        "full_name": "Phường Trúc Bạch",
+        "full_name_en": "Truc Bach Ward",
+        "latitude": "21.0460498",
+        "longitude": "105.8418932"
+      },
+      {
+        "id": "00006",
+        "name": "Vĩnh Phúc",
+        "name_en": "Vinh Phuc",
+        "full_name": "Phường Vĩnh Phúc",
+        "full_name_en": "Vinh Phuc Ward",
+        "latitude": "21.0421695",
+        "longitude": "105.8101415"
+      },
+      {
+        "id": "00019",
+        "name": "Điện Biên",
+        "name_en": "Dien Bien",
+        "full_name": "Phường Điện Biên",
+        "full_name_en": "Dien Bien Ward",
+        "latitude": "21.0323562",
+        "longitude": "105.8365906"
+      },
+      {
+        "id": "00022",
+        "name": "Đội Cấn",
+        "name_en": "Doi Can",
+        "full_name": "Phường Đội Cấn",
+        "full_name_en": "Doi Can Ward",
+        "latitude": "21.0346472",
+        "longitude": "105.8266045"
+      }
+    ]
+  }
