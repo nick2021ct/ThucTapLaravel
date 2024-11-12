@@ -7,14 +7,12 @@ use App\Models\Coupon;
 use App\Models\FlashSale;
 use App\Models\Product;
 use App\Models\ProductVariantItem;
-use App\Traits\CheckFlashSaleProduct;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    use CheckFlashSaleProduct;
 
     public function index()
     {
@@ -37,7 +35,7 @@ class CartController extends Controller
             $product = Product::find($cart->id);
             if ($product != null) {
 
-                $price = $this->calculateFlashSalePrice($product);
+                $price = $product->price;
                 
                 Cart::update($cart->rowId, ['price' => $price, 'options'  => [
                     'variants' => $cart->options->variants,
@@ -64,7 +62,7 @@ class CartController extends Controller
         }
 
 
-        $price = $this->calculateFlashSalePrice($product);
+        $price = $product->price;
 
         $variants = [];
         if ($request->has('variants')) {

@@ -109,8 +109,6 @@ Route::prefix('admin')->as('admin.')->middleware(['auth','role:admin'])->group(f
     Route::resource('coupon', controller: CouponController::class);
     Route::put('coupon/change_status/{id}', [CouponController::class,'changeStatus'])->name('coupon.change_status');
 
-//flash sale
-    Route::resource('flash_sale',FlashSaleController::class);
 //employee
     Route::resource('employee',EmployeeController::class);
     Route::put('employee/change_status/{id}', [EmployeeController::class,'changeStatus'])->name('employee.change_status');

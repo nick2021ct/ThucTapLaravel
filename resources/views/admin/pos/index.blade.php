@@ -13,24 +13,8 @@
         </div>
         <div class="card-body">
             <div class="row">
-                @php
-                    $showProduct = [];
                 
-                    if ($flashSaleProduct != null) {
-                        foreach ($flashSaleProduct as $item) {
-                            $item->is_flash_sale = true;
-                            $item->discount = $flashSale->discount;
-                            $item->discount_price = discount_price($item->price,$flashSale->discount);
-                            $showProduct[] = $item; 
-                        }
-                    }
-                
-                    foreach ($products as $item) {
-                        $item->is_flash_sale = false;
-                        $showProduct[] = $item; 
-                    }
-                @endphp
-                @foreach ($showProduct as $product)
+                @foreach ($products as $product)
                 
                 <div class="col-md-3 mb-2">
                     <div class="card">
@@ -59,12 +43,8 @@
                                     <input style="width: 100%;" class="form-control" type="number" min="1" max="100" name="qty" />
                                 </div>
                             </div>
-                            @if ($product->is_flash_sale)
-                                <h5 class="card-text"><del style="color: red">{{ format_price($product->price) }}</del>
-                                    {{ format_price($product->discount_price) }}</h5>
-                            @else
+                          
                                 <h5 class="card-text">{{ format_price($product->price) }}</h5>
-                            @endif
                                 <input type="hidden" name="product_id" value="{{$product->id}}">
 
                                 <button type="submit" class="btn btn-primary w-100">Add Prouct</button>
@@ -128,7 +108,7 @@
                     <form action="{{ route('admin.pos.checkout') }}" method="POST">
                     @csrf
                     <div class="col-md-4">
-                        <input type="text" class="form-control form-control " name="amount_paid" placeholder="Amount Paid" >
+                        <input type="number" class="form-control form-control " name="amount_paid" placeholder="Amount Paid" >
                     </div>
                 </div>
             </div>

@@ -25,16 +25,35 @@
                         <i class="far fa-plus" id="plus"></i>
                     </span>
                 </div>
+                
+                <form action="{{ route('home') }}" method="GET">
                 <div class="wsus__product_sidebar" id="sticky_sidebar">
                     <div class="accordion" id="accordionExample">
+                        <div class="col-md-3 mt-4">
+                            <button type="submit" class="btn btn-primary text-end">Search</button>
+                        </div>
+                        <br>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    All Categories
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Brands
                                 </button>
                             </h2>
-                           
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                                <div class="accordion-body">
+
+                                <ul>
+                                    @foreach ($brands as $brand)
+                                    <li>
+                                        <input class="form-check-input" type="checkbox" name="brands[]" value="{{ $brand->id }}" 
+                                               {{ is_array(request('brands')) && in_array($brand->id, request('brands')) ? 'checked' : '' }}>
+                                        {{ $brand->name }}
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            </div>
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingTwo">
@@ -46,63 +65,20 @@
                             <div id="collapseTwo" class="accordion-collapse collapse show"
                                 aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <div class="price_ranger">
-                                        <input type="hidden" id="slider_range" class="flat-slider" />
-                                        <button type="submit" class="common_btn">filter</button>
+                                    <div>
+                                        <label for="min_price">Min Price:</label>
+                                        <input type="number" name="min_price" value="{{ request('min_price') }}" class="form-control">
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="max_price">Max Price:</label>
+                                        <input type="number" name="max_price" value="{{ request('max_price') }}" class="form-control">
                                     </div>
                                 </div>
                             </div>
                         </div>
                       
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree3">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree3" aria-expanded="false"
-                                    aria-controls="collapseThree">
-                                    brand
-                                </button>
-                            </h2>
-                            <div id="collapseThree3" class="accordion-collapse collapse show"
-                                aria-labelledby="headingThree3" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault11">
-                                        <label class="form-check-label" for="flexCheckDefault11">
-                                            gentle park
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckChecked22">
-                                        <label class="form-check-label" for="flexCheckChecked22">
-                                            colors
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckChecked222">
-                                        <label class="form-check-label" for="flexCheckChecked222">
-                                            yellow
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckChecked33">
-                                        <label class="form-check-label" for="flexCheckChecked33">
-                                            enice man
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckChecked333">
-                                        <label class="form-check-label" for="flexCheckChecked333">
-                                            plus point
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      
                        
                     </div>
                 </div>
@@ -115,40 +91,26 @@
                                
                                 <div class="wsus__topbar_select">
                                     <select class="select_2" name="state">
-                                        <option>default shorting</option>
-                                        <option>short by latest</option>
-                                        <option>low to high </option>
-                                        <option>high to low</option>
+                                        <option> default shorting</option>
+                                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>short by latest</option>
+                                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>low to high </option>
+                                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>high to low</option>
                                     </select>
                                 </div>
                             </div>
                             
                         </div>
                     </div>
+                </form>
+
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                             aria-labelledby="v-pills-home-tab">
                             <div class="row">
 
-                                @php
-                                $showProduct = [];
+                 
                             
-                                if ($flashSaleProduct != null) {
-                                    foreach ($flashSaleProduct as $item) {
-                                        $item->is_flash_sale = true;
-                                        $item->discount = $flashSale->discount;
-                                        $item->discount_price = discount_price($item->price,$flashSale->discount);
-                                        $showProduct[] = $item; 
-                                    }
-                                }
-                            
-                                foreach ($products as $item) {
-                                    $item->is_flash_sale = false;
-                                    $showProduct[] = $item; 
-                                }
-                            @endphp
-                            
-                            @foreach ($showProduct as $product)
+                            @foreach ($products as $product)
                                 <div class="col-xl-4 col-sm-6">
                                     <div class="wsus__product_item">
                                         @if ($product->is_flash_sale)
@@ -199,29 +161,51 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-xl-12">
-                <section id="pagination">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
+            <div class="col mt-4"> 
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        @if ($products->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&laquo;</span>
+                            </li>
+                        @else
                             <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <i class="fas fa-chevron-left"></i>
+                                <a class="page-link" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
                                 </a>
                             </li>
-                            <li class="page-item"><a class="page-link page_active" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        @endif
+            
+                        @for ($i = 1; $i <= $products->lastPage(); $i++)
+                            <li class="page-item {{ $i == $products->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+            
+                        @if ($products->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <i class="fas fa-chevron-right"></i>
+                                <a class="page-link" href="{{ $products->nextPageUrl() }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
                                 </a>
                             </li>
-                        </ul>
-                    </nav>
-                </section>
-            </div> --}}
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&raquo;</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+            </div>
+            
         </div>
     </div>
 </section>
+@endsection
+
+@section('scripts')
+    <script>
+        
+    </script>
 @endsection

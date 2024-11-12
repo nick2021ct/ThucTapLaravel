@@ -8,13 +8,10 @@ use App\Models\OrderAddress;
 use App\Models\OrderProduct;
 use App\Models\OrderReturn;
 use App\Models\ReturnProduct;
-use App\Models\User;
-use App\Traits\CheckFlashSaleProduct;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    use CheckFlashSaleProduct;
     /**
      * Display a listing of the resource.
      */

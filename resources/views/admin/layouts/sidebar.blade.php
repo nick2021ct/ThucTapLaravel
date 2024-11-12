@@ -55,14 +55,6 @@
               <li class="sidebar-list"> 
                 <svg class="pinned-icon">
                   <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
-                </svg><a class="sidebar-link" href="{{ route('admin.flash_sale.index') }}">
-                  <svg class="stroke-icon">
-                    <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>
-                  </svg><span>Flash sale</span></a>
-              </li>
-              <li class="sidebar-list"> 
-                <svg class="pinned-icon">
-                  <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
                 </svg><a class="sidebar-link" href="{{ route('admin.employee.index') }}">
                   <svg class="stroke-icon">
                     <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>

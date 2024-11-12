@@ -40,15 +40,8 @@
                             @else
                                 <p class="wsus__stock_area"><span class="in_stock">out stock</span> </p>
                             @endif
-                            @if ($flashSale !=null && $isFlashSaleProduct)
-                            @php
-                                $discount_price = discount_price($product->price,$flashSale->discount);
-                            @endphp
-                            <del>{{ format_price($product->price) }}</del>
-                                <h4>{{ format_price($discount_price) }} </h4>
-                                @else
+                            
                                 <h4>{{ format_price($product->price) }} </h4>
-                            @endif
 
                        
                             <p>{{ $product->short_description }}</p>
@@ -78,8 +71,7 @@
                                 </div>
                             </div>
                             <ul class="wsus__button_area">
-                                <li><button type="submit" class="add_cart" href="#">add to cart</button></li>
-                                <li><a class="buy_now" href="#">buy now</a></li>
+                                <li><button style="width: 200px;" type="submit" class="add_cart" href="#">add to cart</button></li>
                                
                             </ul>
                         </form>

@@ -40,15 +40,8 @@
             <div class="product-page-details">
               <h3 class="f-28 f-w-600">{{ $product->name }}</h3>
             </div>
-            @if ($flashSale !=null && $isFlashSaleProduct)
-            @php
-                $discount_price = discount_price($product->price,$flashSale->discount);
-            @endphp
-              <del style="color: red">{{ format_price($product->price) }}</del>
-                <h4>{{ format_price($discount_price) }} </h4>
-                @else
+          
                 <h4>{{ format_price($product->price) }} </h4>
-            @endif
             <hr>
             <p>{{ $product->short_description }}</p>
             <hr>

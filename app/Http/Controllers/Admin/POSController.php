@@ -8,14 +8,12 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\ProductVariantItem;
-use App\Traits\CheckFlashSaleProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session as FacadesSession;
 use Illuminate\Support\Str;
 
 class POSController extends Controller
 {
-    use CheckFlashSaleProduct;
     public function index()
     {
 
@@ -24,13 +22,10 @@ class POSController extends Controller
         // }
 
 
-        $flashSale = FlashSale::where('status', 1)->first();
-        $flashSaleProductId = $flashSale != null ? $flashSale->flashSaleItems()->pluck('product_id')->toArray() : [];
-        $products = Product::where('status', 1)->whereNotIn('id', $flashSaleProductId)->get();
-        $flashSaleProduct = Product::where('status',1)->where('id', $flashSaleProductId)->get();
+        $products = Product::where('status', 1)->get();
 
         $pos = FacadesSession::get('pos');
-        return view('admin.pos.index',compact('products','flashSaleProduct','flashSale','pos'));
+        return view('admin.pos.index',compact('products','pos'));
     }
 
     public function addToPOS(Request $request)
@@ -38,7 +33,7 @@ class POSController extends Controller
     $pos = session()->get('pos', []);
     $product = Product::findOrFail($request->product_id);
 
-    $price = $this->calculateFlashSalePrice($product);
+    $price = $product->price;
 
     $quantity = $request->qty;
 

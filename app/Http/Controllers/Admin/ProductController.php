@@ -42,7 +42,7 @@ class ProductController extends Controller
 
         
         $request->validate([
-            'name' => ['required','image'],
+            'name' => ['required'],
             'thumb_image' => ['required','image'],
             'stock' => ['required'],
             'brand' => ['required'],
@@ -119,14 +119,11 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {   
-        $flashSale = FlashSale::where('status', 1)->first();
-        $flashSaleProductId = $flashSale != null ? $flashSale->flashSaleItems()->pluck('product_id')->toArray() : [];
         $product = Product::findOrFail($id);
 
-        $isFlashSaleProduct = in_array($product->id, $flashSaleProductId);
 
         $product = Product::findOrFail($id);
-        return view('admin.products.show',compact('product','flashSale','isFlashSaleProduct'));
+        return view('admin.products.show',compact('product'));
     }
 
     /**
@@ -146,7 +143,7 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => ['required','image'],
+            'name' => ['required'],
             'thumb_image' => ['required','image'],
             'stock' => ['required'],
             'brand' => ['required'],
