@@ -34,22 +34,7 @@
                                     All Categories
                                 </button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show"
-                                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <ul>
-                                        <li><a href="#">Accessories</a></li>
-                                        <li><a href="#">Babies</a></li>
-                                        <li><a href="#">Babies</a></li>
-                                        <li><a href="#">Beauty</a></li>
-                                        <li><a href="#">Decoration</a></li>
-                                        <li><a href="#">Electronics</a></li>
-                                        <li><a href="#">Fashion</a></li>
-                                        <li><a href="#">Food</a></li>
-                                        <li><a href="#">Furniture</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                           
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingTwo">
@@ -68,41 +53,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree2">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree2" aria-expanded="false"
-                                    aria-controls="collapseThree">
-                                    size
-                                </button>
-                            </h2>
-                            <div id="collapseThree2" class="accordion-collapse collapse show"
-                                aria-labelledby="headingThree2" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            small
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckChecked">
-                                        <label class="form-check-label" for="flexCheckChecked">
-                                            medium
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckChecked2">
-                                        <label class="form-check-label" for="flexCheckChecked2">
-                                            large
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingThree3">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -152,55 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="true"
-                                    aria-controls="collapseThree">
-                                    color
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse show"
-                                aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefaultc1">
-                                        <label class="form-check-label" for="flexCheckDefaultc1">
-                                            black
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckCheckedc2">
-                                        <label class="form-check-label" for="flexCheckCheckedc2">
-                                            white
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckCheckedc3">
-                                        <label class="form-check-label" for="flexCheckCheckedc3">
-                                            green
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckCheckedc4">
-                                        <label class="form-check-label" for="flexCheckCheckedc4">
-                                            pink
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckCheckedc5">
-                                        <label class="form-check-label" for="flexCheckCheckedc5">
-                                            red
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -219,14 +122,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="wsus__topbar_select">
-                                <select class="select_2" name="state">
-                                    <option>show 12</option>
-                                    <option>show 15</option>
-                                    <option>show 18</option>
-                                    <option>show 21</option>
-                                </select>
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
@@ -282,7 +178,7 @@
                                                 <div class="col-xl-6 col-sm-6">
                                                     <p class="mb-2">{{ $variant->name }}:</p>
                                                     <select class="select_2 col" name="variants[]">
-                                                        @foreach ($variant->items as $item)
+                                                        @foreach ($variant->variantItems as $item)
                                                             <option value="{{ $item->id }}" >{{ $item->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -303,7 +199,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-12">
+            {{-- <div class="col-xl-12">
                 <section id="pagination">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
@@ -324,7 +220,7 @@
                         </ul>
                     </nav>
                 </section>
-            </div>
+            </div> --}}
         </div>
     </div>
 </section>

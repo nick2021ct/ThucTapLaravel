@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\FlashSale;
 use App\Models\Product;
 use App\Models\ProductImageGallery;
 use App\Models\ProductType;
-use App\Models\ProductVariant;
-use App\Models\ProductVariantItem;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 
@@ -31,7 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brands  = Brand::all();
+        $brands  = Brand::where('status',1)->get();
         return view('admin.products.create',compact('brands'));
     }
 
@@ -40,19 +39,27 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
+        
         $request->validate([
-            'name' => ['required'],
-            'thumb_image' => ['required'],
+            'name' => ['required','image'],
+            'thumb_image' => ['required','image'],
             'stock' => ['required'],
             'brand' => ['required'],
             'sku' => ['required'],
-            'price' => ['required'],
+            'price' => ['required', 'numeric', 'gt:0'],
             'short_description' => ['required'],
             'long_description' => ['required'],
             'status' => ['required'],
-            'image' => ['array', 'max:5'],
-            'image.*'=>['image'],
-
+            'image' => ['required','array', 'max:5'],
+            'image.*'=>['required','image'],
+        ],[
+            'thumb_image.required' => 'Avatar image is required.',
+            'thumb_image.image' => 'The upload must be an image.',
+            'image.required' => 'Avatar image is required.',
+            'image.image' => 'The upload must be an image.',
+            'image.*.required' => 'Avatar image is required.',
+            'image.*.image' => 'The upload must be an image.',
         ]);
         
         $product = new Product();
@@ -112,8 +119,14 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {   
+        $flashSale = FlashSale::where('status', 1)->first();
+        $flashSaleProductId = $flashSale != null ? $flashSale->flashSaleItems()->pluck('product_id')->toArray() : [];
         $product = Product::findOrFail($id);
-        return view('admin.products.show',compact('product'));
+
+        $isFlashSaleProduct = in_array($product->id, $flashSaleProductId);
+
+        $product = Product::findOrFail($id);
+        return view('admin.products.show',compact('product','flashSale','isFlashSaleProduct'));
     }
 
     /**
@@ -121,7 +134,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $brands  = Brand::all();
+        $brands  = Brand::where('status',1);
         $product = Product::findOrFail($id);
         $productImageGallery = ProductImageGallery::where('product_id',$product->id)->get();
         return view('admin.products.edit',compact('brands','product','productImageGallery'));
@@ -133,17 +146,24 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => ['required'],
+            'name' => ['required','image'],
+            'thumb_image' => ['required','image'],
             'stock' => ['required'],
             'brand' => ['required'],
             'sku' => ['required'],
-            'price' => ['required'],
+            'price' => ['required', 'numeric', 'gt:0'],
             'short_description' => ['required'],
             'long_description' => ['required'],
             'status' => ['required'],
-            'image' => ['array', 'max:5'],
-            'image.*'=>['image'],
-
+            'image' => ['required','array', 'max:5'],
+            'image.*'=>['required','image'],
+        ],[
+            'thumb_image.required' => 'Avatar image is required.',
+            'thumb_image.image' => 'The upload must be an image.',
+            'image.required' => 'Avatar image is required.',
+            'image.image' => 'The upload must be an image.',
+            'image.*.required' => 'Avatar image is required.',
+            'image.*.image' => 'The upload must be an image.',
         ]);
         
         $product =  Product::findOrFail($id);
@@ -215,6 +235,14 @@ class ProductController extends Controller
         $product->delete();
         toastr()->addSuccess('Deleted Successfull');
         return redirect()->route('admin.product.index');
+    }
+
+    public function changeStatus($id)
+    {
+        $product =  Product::findOrFail($id);
+        $product->status = $product->status == 1 ? 0 : 1;
+        $product->save();
+        return response(["status"=>"success","message"=>"Status changed successfully"]);
     }
 
    

@@ -6,18 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderAddress;
 use App\Models\OrderProduct;
+use App\Models\OrderReturn;
+use App\Models\ReturnProduct;
 use App\Models\User;
+use App\Traits\CheckFlashSaleProduct;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    use CheckFlashSaleProduct;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-
-        $orders = Order::with('user')->paginate(5);
+        $searchTerm = $request->input(key: 'search');
+        $orders = Order::search($searchTerm,['order_code'])->with('user')->paginate(5);
         return view('admin.orders.index',compact('orders'));
 
     }
@@ -25,7 +29,7 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function changeOrderStatus(Request $request,$id)
+    public function changeStatus(Request $request,$id)
     {
         $order = Order::findOrFail($id);
 
@@ -43,8 +47,14 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $orderProduct = OrderProduct::with('product')->where('order_id', $id)->get();
         $orderAddress = OrderAddress::where('order_id',$id)->first();
-
+        $orderReturn = OrderReturn::where('order_id',$id)->first();
+        if($orderReturn){
+            $productReturn =ReturnProduct::where('order_return_id',$orderReturn->id)->get();
+            return view('admin.orders.show',compact('orderProduct','orderAddress','order','productReturn','orderReturn'));
+        }
+      
         return view('admin.orders.show',compact('orderProduct','orderAddress','order'));
+
     }
 
     public function changeOrderAddress(Request $request, $id)

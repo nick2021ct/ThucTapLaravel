@@ -50,11 +50,12 @@
                                     <td scope="row">{{ $brand->id }}</td>
                                     <td style="width: 10%"><img class="img-30 me-2" src="{{ asset($brand->logo) }}" alt="profile"></td>
                                     <td>{{ $brand->name }}</td>
-                                    @if ($brand->status == 1)
-                                    <td><span class="badge badge-light-success">Active</span></td>
-                                    @else
-                                    <td><span class="badge badge-light-danger">InActive</span></td>
-                                    @endif
+                                    <td>  
+                                        <div class="form-check form-switch form-check-inline">
+                                            <input class="form-check-input check-size changeStatus" data-id="{{ $brand->id }}" 
+                                                   type="checkbox" role="switch" {{ $brand->status == '1' ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
                                     <td>{{ $brand->created_at }}</td>
                                     <td>{{ $brand->updated_at }}</td>
                                     <td>
@@ -115,3 +116,33 @@
   </div>
 @endsection
 
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('.changeStatus').on('change',function(){
+            var id = $(this).data('id'); 
+
+            $.ajax({
+                url: "{{ route('admin.brand.change_status',':id') }}".replace(':id', id),
+                type: 'PUT',
+                success: function(data){
+                    if(data.status == 'success'){
+                        toastr.success(data.message,'Success');
+                    }else if(data.status == 'error'){
+                        toastr.error(data.message,'Error');
+                    }
+
+                }
+            })
+        })
+
+        
+    })
+</script>
+@endsection

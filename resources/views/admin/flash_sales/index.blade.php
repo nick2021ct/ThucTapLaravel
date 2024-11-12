@@ -37,7 +37,7 @@
                                     <th scope="col">Product name</th>
                                     <th scope="col">Start date</th>
                                     <th scope="col">End date</th>
-                                    <th scope="col">Discount</th>
+                                    <th scope="col">Discount(%)</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>

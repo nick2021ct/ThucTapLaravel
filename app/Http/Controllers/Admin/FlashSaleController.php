@@ -14,9 +14,11 @@ class FlashSaleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $flashSaleInfo = FlashSale::paginate(5);
+        $searchTerm = $request->input(key: 'search');
+
+        $flashSaleInfo = FlashSale::search($searchTerm,['name'])->paginate(5);
 
         return view('admin.flash_sales.index',compact('flashSaleInfo'));
     }

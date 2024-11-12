@@ -47,7 +47,8 @@
     <link rel="stylesheet" href="{{ asset('/') }}/admin/assets/css/vendors/flatpickr/dist/flatpickr.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     
   </head>
   <body>
@@ -100,6 +101,12 @@
      <!-- scrollable-->
      <script src="{{ asset('/') }}admin/assets/js/vendors/swiper/swiper-bundle.min.js"></script>
      <script src="{{ asset('/') }}admin/assets/js/product/custom-swiper.js"></script>
+
+     <script src="{{ asset('/') }}admin/assets/js/dashboard/dashboard-2.js"></script>
+     <script src="{{ asset('/') }}admin/assets/js/widget/chart-widget.js"></script>
+     <script src="{{ asset('/') }}admin/assets/js/vendors/apexcharts/dist/apexcharts.min.js"></script>
+
+
     <!-- scrollable-->
     <!-- customizer-->
     {{-- <script src="{{ asset('/') }}admin/assets/js/theme-customizer/customizer.js"></script> --}}
@@ -110,6 +117,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="{{ asset('/') }}/admin/assets/js/vendors/flatpickr/dist/flatpickr.min.js"></script>
     <script src="{{ asset('/') }}admin/assets/js/custom-flatpickr.js"></script>

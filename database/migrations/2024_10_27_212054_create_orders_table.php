@@ -21,7 +21,7 @@ return new class extends Migration
             $table->double('discount');
             $table->double('total');
             $table->string('payment_method');
-            $table->enum('status', ['pending','processing','shipped', 'completed', 'canceled'])->default('pending');
+            $table->enum('status', ['pending','processing','shipped', 'completed', 'canceled','return_order','refunded'])->default('pending');
             $table->timestamps();
         });
     }

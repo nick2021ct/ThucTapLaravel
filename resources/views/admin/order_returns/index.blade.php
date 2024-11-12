@@ -17,14 +17,11 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center" >
-                        <h4>Product variant Item for {{ $variant->name }}</h4>
-                        <div>
-                            
-                            <a href="{{ route('admin.product_variant_item.create',['productId'=>$product->id,'variantId'=>$variant->id]) }}" class="btn btn-primary">Create</a>
-                        </div>
+                        <h4>Order Return</h4>
+                    
                     </div>
                     <div class="table-responsive">
-                        <form action="{{ route('admin.product_variant.index') }}">
+                        <form action="{{ route('admin.order_return.index') }}">
                             <div class="mb-3 d-flex ">
                                 <div style="width: 10px"></div>
                                 <input type="text" class="form-control  me-2" id="searchInput" placeholder="Search..." style="width: 30%;" name="search">
@@ -35,30 +32,32 @@
                             <thead>
                                 <tr class="b-b-primary">
                                     <th scope="col">Id</th>
-                                    <th scope="col">Name</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Total refund</th>
+                                    <th scope="col">Return reason</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Created</th>
-                                    <th scope="col">Updated</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($variantItems as $item)
+                                @foreach ($order_return as $order)
 
                                 <tr class="b-b-tertiary">
-                                    <td scope="row">{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->productVariant->name }}</td>
-                                    @if ($item->status == 1)
-                                    <td><span class="badge badge-light-success">Active</span></td>
-                                    @else
-                                    <td><span class="badge badge-light-danger">InActive</span></td>
-                                    @endif
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
+                                    <td scope="row">{{ $order->id }}</td>
+                                    <td>{{ $order->order_id }}</td>
+                                    <td>{{ format_price($order->total_refund) }}</td>
+                                    <td>{{ $order->return_reason }}</td>
+                                    <td style="display: flex; justify-content: center; align-items: center;">
+                                        <select class="change_status form-select" name="status" style="width: 75%;"  data-id="{{ $order->id }}">
+                                            <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="accepted" {{ $order->status == 'accepted' ? 'selected' : '' }}>Accepted</option>                                                                            
+                                            <option value="rejected" {{ $order->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                        </select>
+                                    </td>
+                                   
                                     <td>
-                                        <a href="{{ route('admin.product_variant_item.edit',$item->id) }}" class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('admin.product_variant_item.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                        <a href="{{ route('admin.order.detail',$order->order->id) }}" class="btn btn-primary">Detail</a>
+                                        <form action="{{ route('admin.order.destroy', $order->order->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
@@ -72,28 +71,28 @@
                         <br>
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-end">
-                                @if ($variantItems->onFirstPage())
+                                @if ($order_return->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link" aria-hidden="true">&laquo;</span>
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $variantItems->previousPageUrl() }}" aria-label="Previous">
+                                        <a class="page-link" href="{{ $order_return->previousPageUrl() }}" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                             <span class="sr-only">Previous</span>
                                         </a>
                                     </li>
                                 @endif
                     
-                                @for ($i = 1; $i <= $variantItems->lastPage(); $i++)
-                                    <li class="page-item {{ $i == $variantItems->currentPage() ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $variantItems->url($i) }}">{{ $i }}</a>
+                                @for ($i = 1; $i <= $order_return->lastPage(); $i++)
+                                    <li class="page-item {{ $i == $order_return->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $order_return->url($i) }}">{{ $i }}</a>
                                     </li>
                                 @endfor
                     
-                                @if ($variantItems->hasMorePages())
+                                @if ($order_return->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $variantItems->nextPageUrl() }}" aria-label="Next">
+                                        <a class="page-link" href="{{ $order_return->nextPageUrl() }}" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                             <span class="sr-only">Next</span>
                                         </a>
@@ -112,5 +111,36 @@
     </div>
     <!-- Container-fluid starts-->
   </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.change_status').on('change',function(){
+                var orderId = $(this).data('id'); 
+                var status = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('admin.order_return.change_status', ':id') }}".replace(':id', orderId),
+                    type: 'PUT',
+                    data: {status: status},
+                    success: function(data){
+                        if(data.status == 'success'){
+                            toastr.success(data.message,'Success');
+                        }else if(data.status == 'error'){
+                            toastr.error(data.message,'Error');
+                        }
+
+                    }
+                })
+            })
+        })
+    </script>
 @endsection
 

@@ -61,7 +61,7 @@
                                         <div class="col-xl-6 col-sm-6">
                                             <h5 class="mb-2">{{ $variant->name }}:</h5>
                                             <select class="select_2" name="variants[]">
-                                                @foreach ($variant->items as $item)
+                                                @foreach ($variant->variantItems as $item)
                                                     <option value="{{ $item->id }}" >{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
@@ -80,8 +80,7 @@
                             <ul class="wsus__button_area">
                                 <li><button type="submit" class="add_cart" href="#">add to cart</button></li>
                                 <li><a class="buy_now" href="#">buy now</a></li>
-                                <li><a href="#"><i class="fal fa-heart"></i></a></li>
-                                <li><a href="#"><i class="far fa-random"></i></a></li>
+                               
                             </ul>
                         </form>
                             <p class="brand_model"><span>brand: </span><img style="width: 5%" src="{{ asset($product->brand->logo) }}" alt=""> {{ $product->brand->name }}</p>

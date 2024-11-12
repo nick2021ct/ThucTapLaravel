@@ -1,4 +1,4 @@
-@extends('user.dashboard.layouts.master')
+@extends('user.profile_account.layouts.master')
 
 @section('content')
 

@@ -104,4 +104,12 @@ class BrandController extends Controller
         toastr()->addSuccess(message: 'Deleted Successfull');
         return redirect()->route('admin.brand.index');
     }
+
+    public function changeStatus($id)
+    {
+        $brand = Brand::findOrFail($id);
+        $brand->status = $brand->status == 1 ? 0 : 1;
+        $brand->save();
+        return response(["status"=>"success","message"=>"Status changed successfully"]);
+    }
 }

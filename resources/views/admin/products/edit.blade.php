@@ -195,8 +195,14 @@
           ]
       });
   });
-      $('form').on('submit', function() {
-        $('#summernote').val($('#summernote').summernote('code'));
+  $('form').on('submit', function(e) {
+        let content = $('#summernote').summernote('code');
+        let strippedContent = content.replace(/(<([^>]+)>)/gi, "").trim();
+        if (strippedContent === '') {
+            $('#summernote').val(''); 
+        } else {
+            $('#summernote').val(content);
+        }
     });
 </script>
 @endsection

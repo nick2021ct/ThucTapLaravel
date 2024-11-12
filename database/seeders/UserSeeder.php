@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
             'password'=>bcrypt('password')
         ],
         [ 'name'=>'Nhan vien',
-            'email'=>'vendor@gmail.com',
-            'role'=>'vendor',
+            'email'=>'employee@gmail.com',
+            'role'=>'employee',
             'status'=>'active',
             'password'=>bcrypt('password')
         ],

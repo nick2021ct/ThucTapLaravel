@@ -12,6 +12,15 @@
               </li>
               <li class="line pin-line"></li>
               <li class="sidebar-main-title">Product Controller</li>
+              @if (Auth::user()->role == "admin")
+              <li class="sidebar-list"> 
+                <svg class="pinned-icon">
+                  <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
+                </svg><a class="sidebar-link" href="{{ route('admin.dashboard') }}">
+                  <svg class="stroke-icon">
+                    <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>
+                  </svg><span>DashBoard</span></a>
+              </li>
               <li class="sidebar-list"> 
                 <svg class="pinned-icon">
                   <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
@@ -19,7 +28,7 @@
                   <svg class="stroke-icon">
                     <use href=""></use>
                   </svg><span>Product</span>
-                  <div class="badge badge-primary rounded-pill">3</div>
+                  <div class="badge badge-primary rounded-pill">2</div>
                   <svg class="feather">
                     <use href="https://admin.pixelstrap.net/edmin/assets/svg/feather-icons/dist/feather-sprite.svg#chevron-right"></use>
                   </svg></a>
@@ -32,10 +41,7 @@
                       <svg class="svg-menu">
                         <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#right-3"></use>
                       </svg>Brand</a></li>
-                  <li><a href="dashboard-03.html"> 
-                      <svg class="svg-menu">
-                        <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#right-3"></use>
-                      </svg>Project</a></li>
+                
                 </ul>
               </li>
               <li class="sidebar-list"> 
@@ -54,7 +60,24 @@
                     <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>
                   </svg><span>Flash sale</span></a>
               </li>
-            
+              <li class="sidebar-list"> 
+                <svg class="pinned-icon">
+                  <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
+                </svg><a class="sidebar-link" href="{{ route('admin.employee.index') }}">
+                  <svg class="stroke-icon">
+                    <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>
+                  </svg><span>Employee</span></a>
+              </li>
+              
+              @endif
+              <li class="sidebar-list"> 
+                <svg class="pinned-icon">
+                  <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
+                </svg><a class="sidebar-link" href="{{ route('admin.pos.index') }}">
+                  <svg class="stroke-icon">
+                    <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>
+                  </svg><span>Point of Sale</span></a>
+              </li>
               <li class="sidebar-list"> 
                 <svg class="pinned-icon">
                   <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
@@ -62,11 +85,17 @@
                   <svg class="stroke-icon">
                     <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>
                   </svg><span>Orders</span></a>
-              </li>
-              <li class="line"> </li>
-             
-              
-              
+                </li>
+                <li class="sidebar-list"> 
+                  <svg class="pinned-icon">
+                    <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Pin"></use>
+                  </svg><a class="sidebar-link" href="{{ route('admin.order_return.index') }}">
+                    <svg class="stroke-icon">
+                      <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Wallet"></use>
+                    </svg><span>Order Return</span></a>
+                </li>
+                <li class="line"> </li>
+
             </ul>
           </div>
           <div class="right-arrow" id="right-arrow">

@@ -32,7 +32,7 @@
                             <thead>
                                 <tr class="b-b-primary">
                                     <th scope="col">Id</th>
-                                    <th scope="col">User Name</th>
+                                    <th scope="col">Order code</th>
                                     <th scope="col">Subtotal</th>
                                     <th scope="col">Discount</th>
                                     <th scope="col">Total</th>
@@ -46,18 +46,20 @@
 
                                 <tr class="b-b-tertiary">
                                     <td scope="row">{{ $order->id }}</td>
-                                    <td>{{ $order->user->name ?? null }}</td>
+                                    <td>{{ $order->order_code }}</td>
                                     <td>{{ format_price($order->subtotal) }}</td>
                                     <td>{{ format_price($order->discount) }}</td>
                                     <td>{{ format_price($order->total) }}</td>
                                     <td>{{ $order->payment_method }}</td>
                                     <td style="display: flex; justify-content: center; align-items: center;">
-                                        <select class="form-select" name="status" style="width: 65%;" id="order_status" data-order-id="{{ $order->id }}">
+                                        <select class="order_status form-select" name="status" style="width: 75%;"  data-order-id="{{ $order->id }}">
                                             <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                             <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
                                             <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>                                                                            
                                             <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
                                             <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                                            <option value="canceled" {{ $order->status == 'return_order' ? 'selected' : '' }}>Return Order</option>
+                                            <option value="canceled" {{ $order->status == 'refunded' ? 'selected' : '' }}>Refunded</option>
                                         </select>
                                     </td>
                                    
@@ -128,12 +130,12 @@
                 }
             });
 
-            $('#order_status').on('change',function(){
+            $('.order_status').on('change',function(){
                 var orderId = $(this).data('order-id'); 
                 var status = $(this).val();
 
                 $.ajax({
-                    url: "{{ route('admin.order.change_order_status', ':id') }}".replace(':id', orderId),
+                    url: "{{ route('admin.order.change_status', ':id') }}".replace(':id', orderId),
                     type: 'PUT',
                     data: {status: status},
                     success: function(data){

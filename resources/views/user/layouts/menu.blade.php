@@ -6,7 +6,7 @@
                     <div class="wsus_menu_category_bar">
                         <i class="far fa-bars"></i>
                     </div>
-                    <ul class="wsus_menu_cat_item show_home toggle_menu">
+                    {{-- <ul class="wsus_menu_cat_item show_home toggle_menu">
                         <li><a href="#"><i class="fas fa-star"></i> hot promotions</a></li>
                         <li><a class="wsus__droap_arrow" href="#"><i class="fal fa-tshirt"></i> Fashion </a>
                             <ul class="wsus_menu_cat_droapdown">
@@ -210,11 +210,11 @@
                         <li><a href="#"><i class="fal fa-gift-card"></i> Gift Ideas</a></li>
                         <li><a href="#"><i class="fal fa-gamepad-alt"></i> Toy & Games</a></li>
                         <li><a href="#"><i class="fal fa-gem"></i> View All Categories</a></li>
-                    </ul>
-
+                    </ul> --}}
+                    
                     <ul class="wsus__menu_item">
                         <li><a class="active" href="{{ route('home') }}">home</a></li>
-                        <li><a href="product_grid_view.html">shop <i class="fas fa-caret-down"></i></a>
+                        {{-- <li><a href="product_grid_view.html">shop <i class="fas fa-caret-down"></i></a>
                             <div class="wsus__mega_menu">
                                 <div class="row">
                                     <div class="col-xl-3 col-lg-3">
@@ -301,12 +301,11 @@
                             </ul>
                         </li>
                         <li><a href="track_order.html">track order</a></li>
-                        <li><a href="daily_deals.html">daily deals</a></li>
+                        <li><a href="daily_deals.html">daily deals</a></li> --}}
                     </ul>
                     <ul class="wsus__menu_item wsus__menu_item_right">
-                        <li><a href="contact.html">contact</a></li>
                         <li><a href="{{ route('order_history.index') }}">my orders</a></li>
-                        <li><a href="{{ route('user.dashboard') }}">my account</a></li>
+                        <li><a href="{{ route('user.my_profile') }}">my profile</a></li>
                         @auth
                         <li>
                             <form method="POST" action="{{ route('logout') }}" style="border: none; background: none; padding: 0;">

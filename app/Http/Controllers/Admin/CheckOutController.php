@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderSuccessMail;
 use App\Models\Order;
 use App\Models\OrderAddress;
 use App\Models\OrderProduct;
@@ -10,6 +11,7 @@ use App\Models\Product;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -55,7 +57,7 @@ class CheckOutController extends Controller
         }else{
             $validator = Validator::make($request->all(),[
                 'name'=>'required',
-                'email'=>'required',
+                'email'=>'required|email',
                 'phone'=>'required',
                 'province'=>'required',
                 'district'=>'required',
@@ -70,8 +72,16 @@ class CheckOutController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $this->addressCheckout($request,$order->id);
+        $address = $this->addressCheckout($request,$order->id);
         $this->productCheckout($order->id);
+        $checkoutDataMail = [
+            'name' => $address->name,
+            'order_id' => $order->order_code,
+        ];
+
+        
+
+        Mail::to($address->email)->send(new OrderSuccessMail($checkoutDataMail));
 
         Session::forget('checkout');
         toastr()->addSuccess('Checkout Successfully');
@@ -120,6 +130,8 @@ class CheckOutController extends Controller
             $orderAddress->specific_address = $request->specific_address;
         }
         $orderAddress->save();
+
+        return $orderAddress;
     }
 
     /**

@@ -17,16 +17,18 @@ class MyProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('user.dashboard.profile',compact('user'));
+        return view('user.profile_account.profile',compact('user'));
     }
 
     public function updateProfile(Request $request,$id)
     {
         $request->validate([
             'image'=>'image',
-            'name'=>'required',
+            'name'=>'required|string',
             'email'=>'required|email|unique:users,email,'.$id,
-            'phone'=>'required|numeric',
+            'phone'=>'required|numeric|regex:/^0[0-9]{9}$/',
+        ],[
+            'phone.regex' => 'Phone number is not in correct format.'
         ]);
         
         $user = User::findOrFail($id);

@@ -54,23 +54,8 @@
                                         </div>
                                       </div>
                                     <br>
-                                    {{-- <div class="mb-3 row">
-                                        <label class="col-md-3 col-form-label">Start Date</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control digits" type="date" name="start_date">
-                                        </div>
-                                    </div>
-                                    
-                                    
                                     <div class="mb-3 row">
-                                        <label class="col-md-3 col-form-label">End Date</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control digits" type="date" name="end_date">
-                                        </div>
-                                    </div> --}}
-                                    
-                                    <div class="mb-3 row">
-                                        <label class="col-md-3 col-form-label">Discount</label>
+                                        <label class="col-md-3 col-form-label">Discount(%)</label>
                                         <div class="col-md-9">
                                             <input class="form-control digits" type="number" name="discount">
                                             @error('discount')
@@ -99,7 +84,6 @@
                                             <th scope="col">Stock Quantity</th>
                                             <th scope="col">Brand</th>
                                             <th scope="col">Price</th>
-                                            <th scope="col">Offer Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>

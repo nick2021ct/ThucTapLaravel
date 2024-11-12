@@ -45,8 +45,9 @@ class HomeController extends Controller
         $flashSale = FlashSale::where('status', 1)->first();
         $flashSaleProductId = $flashSale != null ? $flashSale->flashSaleItems()->pluck('product_id')->toArray() : [];
         $product = Product::findOrFail($id);
-
         $isFlashSaleProduct = in_array($product->id, $flashSaleProductId);
+
+        $product = Product::findOrFail($id);
 
         return view('user.detail',compact('product','flashSale','isFlashSaleProduct'));
     }

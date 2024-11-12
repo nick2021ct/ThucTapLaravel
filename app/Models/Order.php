@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\SearchableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
     use HasFactory;
+    use SearchableTrait;
 
     protected $table = 'orders';
 
@@ -26,4 +28,15 @@ class Order extends Model
     {
         return $this->hasOne(OrderAddress::class);
     }
+
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
+
+    public function orderReturn()
+    {
+        return $this->hasOne(OrderReturn::class);
+    }
+    
 }

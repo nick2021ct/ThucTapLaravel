@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -15,8 +16,10 @@ class ProductVariantController extends Controller
      */
     public function index(Request $request)
     {   
+        $searchTerm = $request->input(key: 'search');
+
         $product = Product::findOrFail($request->product);
-        $product_variants = ProductVariant::where('product_id',$request->product)->paginate(5);
+        $product_variants = ProductVariant::search($searchTerm,['name'])->with('variantItems')->where('product_id',$request->product)->paginate(5);
         return view('admin.products.product-variant.index',compact('product_variants','product'));
     }
 
@@ -97,5 +100,13 @@ class ProductVariantController extends Controller
         $variant->delete();
         toastr()->addSuccess('Deleted successfull');
         return to_route('admin.product_variant.index',['product'=>$variant->product_id]);
+    }
+
+    public function changeStatus($id)
+    {
+        $variant = ProductVariant::findOrFail($id);
+        $variant->status = $variant->status == 1 ? 0 : 1;
+        $variant->save();
+        return response(["status"=>"success","message"=>"Status changed successfully"]);
     }
 }

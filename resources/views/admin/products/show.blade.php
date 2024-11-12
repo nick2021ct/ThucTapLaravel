@@ -8,18 +8,7 @@
       <div class="col-sm-6">
         <h3>Product Page</h3>
       </div>
-      <div class="col-sm-6">
-        <nav>
-          <ol class="breadcrumb justify-content-sm-end align-items-center">
-            <li class="breadcrumb-item"> <a href="index.html">
-                <svg class="svg-color">
-                  <use href="https://admin.pixelstrap.net/edmin/assets/svg/iconly-sprite.svg#Home"></use>
-                </svg></a></li>
-            <li class="breadcrumb-item">ECommerce</li>
-            <li class="breadcrumb-item active">Product Page</li>
-          </ol>
-        </nav>
-      </div>
+     
     </div>
   </div>
   <!-- Container-fluid starts-->
@@ -51,14 +40,17 @@
             <div class="product-page-details">
               <h3 class="f-28 f-w-600">{{ $product->name }}</h3>
             </div>
-            @if ($product->offer_price !=null)
-            <div class="product-price">${{ $product->offer_price }}  
-              <del>${{ $product->price }} </del>
-            </div>
-            @else
-            <div class="product-price">${{ $product->price }}  
-            </div>
+            @if ($flashSale !=null && $isFlashSaleProduct)
+            @php
+                $discount_price = discount_price($product->price,$flashSale->discount);
+            @endphp
+              <del style="color: red">{{ format_price($product->price) }}</del>
+                <h4>{{ format_price($discount_price) }} </h4>
+                @else
+                <h4>{{ format_price($product->price) }} </h4>
             @endif
+            <hr>
+            <p>{{ $product->short_description }}</p>
             <hr>
             <div class="row flex-wrap justify-content-center">
               @foreach ($product->productVariant as $variants)
@@ -68,7 +60,7 @@
                               {{ $variants->name }}
                           </button>
                           <ul class="dropdown-menu dropdown-block">
-                              @foreach ($variants->items as $item)
+                              @foreach ($variants->variantItems as $item)
                                   <li><a class="dropdown-item" href="#">{{ $item->name }}</a></li>
                               @endforeach
                           </ul>
@@ -82,9 +74,7 @@
           </div>
             
             
-            <hr>
-            <p>{{ $product->short_description }}</p>
-            <hr>
+           
             <div>
               <table class="product-page-width table-borderless">
                 <tbody>

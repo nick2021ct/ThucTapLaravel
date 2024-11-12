@@ -14,10 +14,10 @@ class OrderHistoryController extends Controller
     {
         if(Auth::check()){
             $orders = Order::where('user_id',Auth::user()->id)->get();
-            return view('user.dashboard.orders.index',compact('orders'));
+            return view('user.profile_account.orders.index',compact('orders'));
         }
         else{
-            return view('user.dashboard.orders.check_order_code');
+            return view('user.profile_account.orders.check_order_code');
         }
     }
 
@@ -27,7 +27,7 @@ class OrderHistoryController extends Controller
         $orderProduct = OrderProduct::where('order_id',$id)->get();
         $orderAddress = OrderAddress::where('order_id',$id)->first();
 
-        return view('user.dashboard.orders.order_auth',compact('orderProduct','orderAddress','order'));
+        return view('user.profile_account.orders.order_auth',compact('orderProduct','orderAddress','order'));
     }
 
     public function show(Request $request)
@@ -35,7 +35,7 @@ class OrderHistoryController extends Controller
         $order = Order::where('order_code',$request->order_code)->first();
         $orderProduct = OrderProduct::where('order_id',$order->id)->get();
         $orderAddress = OrderAddress::where('order_id',$order->id)->first();
-        return view('user.dashboard.orders.order',compact('orderProduct','orderAddress','order'));
+        return view('user.profile_account.orders.order',compact('orderProduct','orderAddress','order'));
 
     }
 

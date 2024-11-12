@@ -1,9 +1,9 @@
-@extends('user.dashboard.layouts.master')
+@extends('user.profile_account.layouts.master')
 
 @section('content')
 <div class="row">
     <div class="col-xl-9 col-xxl-10 col-lg-9 ms-auto">
-       @include('user.dashboard.orders.show');
+       @include('user.profile_account.orders.show')
     </div>
 </div>
     </div>

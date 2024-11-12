@@ -46,7 +46,7 @@
                                     <td class="col-2">
                                         <div class="product_qty_wrapper d-flex align-items-center">
                                             <button class="btn btn-primary btn-sm product-decrement" type="button">-</button>
-                                            <input class="product-qty form-control form-control-sm mx-1" type="number" min="1" max="100" data-rowid="{{ $cart->rowId }}" value="{{ $cart->qty }}" readonly />
+                                            <input class="product-qty form-control form-control-sm mx-1" type="number" min="1" max="{{ $cart->options->stock }}" data-stock="{{ $cart->options->stock }}" data-rowid="{{ $cart->rowId }}" value="{{ $cart->qty }}" readonly />
                                             <button class="btn btn-primary btn-sm product-increment" type="button">+</button>
                                         </div>
                                     </td>
@@ -54,7 +54,9 @@
                                         <h6 id="{{ $cart->rowId }}">${{ $cart->options->total }}</h6>
                                     </td>
                                     <td class="col-1">
-                                        <a href="{{ route('cart.remove_cart', $cart->rowId) }}"><i class="far fa-times"></i></a>
+                                        {{-- <a href="{{ route('cart.remove_cart', $cart->rowId) }}" ><i class="far fa-times"></i></a> --}}
+
+                                        <button style="border:0ch; background-color: white" class="delete_cart" data-rowid="{{ $cart->rowId }}"><i class="far fa-times"></i></button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -98,7 +100,11 @@
                 let input = $(this).siblings('.product-qty');
                 let quantity = parseInt(input.val()) + 1;
                 let rowId = input.data('rowid');
-                
+                let stock = parseInt(input.data('stock')); 
+
+                if( quantity >stock ){
+                    quantity = stock;
+                }
                 
                 input.val(quantity);
 
@@ -123,6 +129,27 @@
                 })
             });
 
+            
+            $('.delete_cart').on('click', function() {
+                let rowId = $(this).data('rowid');
+        
+                $.ajax({
+                    url: "{{ route('cart.remove_cart', ':rowId') }}".replace(':rowId', rowId), 
+                    method: "POST",
+                    data:{
+                        rowId:rowId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data){
+                        if(data.status == 'success'){
+                            window.location.reload();
+                        }else if(data.status=='error'){
+                            toastr.error(data.message)
+                        }
+                    }
+                })
+            });
+
 
             $('.product-decrement').on('click',function(){
                 let input = $(this).siblings('.product-qty');
@@ -131,6 +158,7 @@
                 if(quantity < 1){
                     quantity = 1;
                 }
+                
                 input.val(quantity);
 
                 $.ajax({

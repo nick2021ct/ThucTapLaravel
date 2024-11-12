@@ -14,9 +14,10 @@ class CouponController extends Controller
      /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $coupons = Coupon::paginate(5);
+        $searchTerm = $request->input(key: 'search');
+        $coupons = Coupon::search($searchTerm,['name'])->paginate(5);
         return view('admin.coupons.index',compact('coupons'));
     }
 
@@ -39,12 +40,10 @@ class CouponController extends Controller
         $validator = Validator::make($request->all(),[
             'name'=>'required',
                 'code'=>'required',
-                'quantity'=>'required|integer',
-                'max_use'=>'required|integer',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after:start_date',
                 'discount_type'=>'required',
-                'discount_value'=>'required|integer',
+                'discount_value'=>'required|integer|gt:0',
                 'status'=>'required',
         ]);
 
@@ -62,13 +61,10 @@ class CouponController extends Controller
         $code = new Coupon();
         $code->name = $request->name;
         $code->code = $request->code;
-        $code->quantity = $request->quantity;
-        $code->max_use = $request->max_use;
         $code->start_date = $request->start_date;
         $code->end_date = $request->end_date;
         $code->discount_type = $request->discount_type;
         $code->discount_value = $request->discount_value;
-        // $code->total_use ;
         $code->status = $request->status;
         $code->save();
 
@@ -99,15 +95,13 @@ class CouponController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>['required'],
-                'code'=>['required'],
-                'quantity'=>['required','integer'],
-                'max_use'=>['required','integer'],
-                'start_date'=>['required'],
-                'end_date'=>['required'],
-                'discount_type'=>['required'],
-                'discount_value'=>['required','integer'],
-                'status'=>['required'],
+            'name'=>'required',
+                'code'=>'required',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after:start_date',
+                'discount_type'=>'required',
+                'discount_value'=>'required|integer|gt:0',
+                'status'=>'required',
         ]);
 
         $validator->after(function ($validator) use ($request){
@@ -129,13 +123,10 @@ class CouponController extends Controller
         $code = Coupon::findOrFail($id);
         $code->name = $request->name;
         $code->code = $request->code;
-        $code->quantity = $request->quantity;
-        $code->max_use = $request->max_use;
         $code->start_date = $request->start_date;
         $code->end_date = $request->end_date;
         $code->discount_type = $request->discount_type;
         $code->discount_value = $request->discount_value;
-        // $code->total_use ;
         $code->status = $request->status;
         $code->save();
 
@@ -152,5 +143,13 @@ class CouponController extends Controller
         $code->delete();
         toastr()->addSuccess('Deleted Successfully');
         return redirect()->route('admin.coupon.index');
+    }
+
+    public function changeStatus($id)
+    {
+        $code = Coupon::findOrFail($id);
+        $code->status = $code->status == 1 ? 0 : 1;
+        $code->save();
+        return response(["status"=>"success","message"=>"Status changed successfully"]);
     }
 }

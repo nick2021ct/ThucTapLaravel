@@ -3,7 +3,7 @@
 @section('content')
     <section id="wsus__cart_view">
         <div class="container">
-            <form class="wsus__checkout_form" action="{{ route('checkout.cash_method') }}" method="POST">
+            <form id="myForm" class="wsus__checkout_form" action="{{ route('checkout.cash_method') }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-xl-8 col-lg-7">
@@ -285,11 +285,13 @@
                 </div>
             </div>
         </div>
+        
     @endif
 @endsection
 
 @section('scripts')
     <script>
+          
         $(document).ready(function() {
             $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function(data_tinh) {
                 if (data_tinh.error == 0) {

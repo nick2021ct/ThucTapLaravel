@@ -39,7 +39,6 @@
                                     <th scope="col">Stock Quantity</th>
                                     <th scope="col">Brand</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Offer Price</th>
 
                                     <th scope="col" >Status</th>
                           
@@ -57,11 +56,12 @@
                                     <td>{{ $product->brand->name }}</td>
                                     <td>{{ $product->price }}</td>
 
-                                    @if ($product->status == 1)
-                                    <td><span class="badge badge-light-success">Active</span></td>
-                                    @else
-                                    <td><span class="badge badge-light-danger">InActive</span></td>
-                                    @endif
+                                    <td>  
+                                        <div class="form-check form-switch form-check-inline">
+                                            <input class="form-check-input check-size changeStatus" data-id="{{ $product->id }}" 
+                                                  type="checkbox" role="switch" {{ $product->status == '1' ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
                                
                                     <td style="width: 280px">
                                        
@@ -70,7 +70,6 @@
                                             <ul class="dropdown-menu dropdown-block">
                                               <li><a class="dropdown-item" href="{{ route('admin.product.show',$product->id) }}">Detail</a></li>
                                               <li><a class="dropdown-item" href="{{ route('admin.product_variant.index',['product'=>$product->id]) }}">Variant</a></li>
-                                              <li><a class="dropdown-item" href="#">Images</a></li>
                                             </ul>
                                           </div>
                                         {{-- <a href="{{ route('admin.product.show',$product->id) }}" class="btn btn-success">Detail</a> --}}
@@ -129,5 +128,33 @@
     </div>
     <!-- Container-fluid starts-->
   </div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('.changeStatus').on('change',function(){
+            var id = $(this).data('id'); 
+
+            $.ajax({
+                url: "{{ route('admin.product.change_status',':id') }}".replace(':id', id),
+                type: 'PUT',
+                success: function(data){
+                    if(data.status == 'success'){
+                        toastr.success(data.message,'Success');
+                    }else if(data.status == 'error'){
+                        toastr.error(data.message,'Error');
+                    }
+
+                }
+            })
+        })
+    })
+</script>
 @endsection
 

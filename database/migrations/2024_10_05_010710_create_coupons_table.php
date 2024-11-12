@@ -15,14 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->integer('quantity');
-            $table->integer('max_use');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('discount_type');
             $table->double('discount_value');
             $table->boolean('status');
-            $table->integer('total_use')->nullable();
             $table->timestamps();
         });
     }

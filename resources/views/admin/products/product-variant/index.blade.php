@@ -2,6 +2,22 @@
 
 
 @section('content')
+<style>
+    .sub-info {
+    font-size: 0.85em;
+    color: #555;
+}
+
+.sub-row {
+    background-color: #f8f9fa;
+    color: #333;
+    font-size: 0.85em;
+}
+
+.sub-row td {
+    padding: 5px;
+}
+</style>
 <div class="page-body">
     <div class="container-fluid">
       <div class="row page-title">
@@ -24,49 +40,80 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <form action="{{ route('admin.product_variant.index') }}">
-                            <div class="mb-3 d-flex ">
+                        <form method="GET" action="{{ route('admin.product_variant.index') }}">
+                            <div class="mb-3 d-flex">
                                 <div style="width: 10px"></div>
-                                <input type="text" class="form-control  me-2" id="searchInput" placeholder="Search..." style="width: 30%;" name="search">
-                                <button class="btn btn-primary " type="submit">Search</button>
+                                <input type="text" class="form-control me-2" id="searchInput" placeholder="Search..." style="width: 30%;" name="search" value="{{ request('search') }}">
+                                <input type="hidden" name="product" value="{{ request('product') }}">
+                                <button class="btn btn-primary" type="submit">Search</button>
                             </div>
                         </form>
                         <table class="table text-center">
                             <thead>
                                 <tr class="b-b-primary">
-                                    <th scope="col">Id</th>
+                                    <th scope="col">Type</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Created At</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Created</th>
-                                    <th scope="col">Updated</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($product_variants as $variant)
+                                    <tr class="b-b-tertiary">
+                                        <th scope="row">
+                                          Variant
+                                        </th>
+                                        <th>
+                                            {{ $variant->name }}
+                                        </th>
+                                        <th>
+                                            {{ $variant->created_at }}
+                                        </th>
+                                        <td>  
+                                            <div class="form-check form-switch form-check-inline">
+                                                <input class="form-check-input check-size changeVariantStatus" data-variant-id="{{ $variant->id }}" 
+                                                      type="checkbox" role="switch" {{ $variant->status == '1' ? 'checked' : '' }}>
+                                            </div>
+                                        </td>
+                                
+                                        <th>
+                                            <a href="{{ route('admin.product_variant_item.create',['productId'=>$product->id,'variantId'=>$variant->id]) }}" class="btn btn-primary">Create</a>
 
-                                <tr class="b-b-tertiary">
-                                    <td scope="row">{{ $variant->id }}</td>
-                                    <td>{{ $variant->name }}</td>
-                                    @if ($variant->status == 1)
-                                    <td><span class="badge badge-light-success">Active</span></td>
-                                    @else
-                                    <td><span class="badge badge-light-danger">InActive</span></td>
-                                    @endif
-                                    <td>{{ $variant->created_at }}</td>
-                                    <td>{{ $variant->updated_at }}</td>
+                                            <a href="{{ route('admin.product_variant.edit',$variant->id) }}" class="btn btn-warning">Edit</a>
+                                            <form action="{{ route('admin.product_variant.destroy', $variant->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                        @foreach ($variant->variantItems as $variant_item)
+                                        <tr>
+                                        <td></td>
+                                        <td>{{ $variant_item->name }}</td>
+                                        <td>{{ $variant_item->created_at }}</td>
+
+                                        <td>  
+                                            <div class="form-check form-switch form-check-inline">
+                                                <input class="form-check-input check-size changeVariantItemStatus" data-item-id="{{ $variant_item->id }}" 
+                                                       type="checkbox" role="switch" {{ $variant_item->status == '1' ? 'checked' : '' }}>
+                                            </div>
+                                        </td>
                                     <td>
-                                        <a href="{{ route('admin.product_variant_item.index',['productId'=>request()->product,'variantId'=>$variant->id]) }}" class="btn btn-success">Varian Item</a>
-                                        <a href="{{ route('admin.product_variant.edit',$variant->id) }}" class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('admin.product_variant.destroy', $variant->id) }}" method="POST" style="display:inline;">
+
+                                        <a href="{{ route('admin.product_variant_item.edit',$variant_item->id) }}" class="btn btn-warning">Edit</a>
+                                        <form action="{{ route('admin.product_variant_item.destroy', $variant_item->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
                                         </form>
                                     </td>
-                                </tr>
+                                    </tr>
+                                        @endforeach
+                                
+                                  
                                 @endforeach
-                              
                             </tbody>
                         </table>
                         <br>
@@ -112,5 +159,49 @@
     </div>
     <!-- Container-fluid starts-->
   </div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('.changeVariantStatus').on('change',function(){
+            var id = $(this).data('variant-id'); 
+
+            $.ajax({
+                url: "{{ route('admin.product_variant.change_status',':id') }}".replace(':id', id),
+                type: 'PUT',
+                success: function(data){
+                    if(data.status == 'success'){
+                        toastr.success(data.message,'Success');
+                    }else if(data.status == 'error'){
+                        toastr.error(data.message,'Error');
+                    }
+
+                }
+            })
+        })
+
+        $('.changeVariantItemStatus').on('change', function() {
+            var id = $(this).data('item-id'); 
+
+            $.ajax({
+                url: "{{ route('admin.product_variant_item.change_status', ':id') }}".replace(':id', id), 
+                type: 'PUT',
+                success: function(data) {
+                    if(data.status == 'success'){
+                        toastr.success(data.message, 'Success');
+                    } else if(data.status == 'error') {
+                        toastr.error(data.message, 'Error');
+                    }
+                }
+            })
+        })
+    })
+</script>
 @endsection
 

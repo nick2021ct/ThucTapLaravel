@@ -37,8 +37,6 @@
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Code</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Max use</th>
                                     <th scope="col">Start date</th>
                                     <th scope="col">End date</th>
                                     <th scope="col">Discount type</th>
@@ -54,17 +52,17 @@
                                     <td scope="row">{{ $coupon->id }}</td>
                                     <td>{{ $coupon->name }}</td>
                                     <td>{{ $coupon->code }}</td>
-                                    <td>{{ $coupon->quantity }}</td>
-                                    <td>{{ $coupon->max_use }}</td>
                                     <td>{{ $coupon->start_date }}</td>
                                     <td>{{ $coupon->end_date }}</td>
                                     <td>{{ $coupon->discount_type }}</td>
                                     <td>{{ $coupon->discount_value }}</td>
-                                    @if ($coupon->status == 1)
-                                    <td><span class="badge badge-light-success">Active</span></td>
-                                    @else
-                                    <td><span class="badge badge-light-danger">InActive</span></td>
-                                    @endif
+                                    <td>  
+                                        <div class="form-check form-switch form-check-inline">
+                                            <input class="form-check-input check-size changeStatus" data-id="{{ $coupon->id }}" 
+                                                   type="checkbox" role="switch" {{ $coupon->status == '1' ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
+                                <td>
                                     <td>
                                         <a href="{{ route('admin.coupon.edit',$coupon->id) }}" class="btn btn-warning">Edit</a>
                                         <form action="{{ route('admin.coupon.destroy', $coupon->id) }}" method="POST" style="display:inline;">
@@ -123,3 +121,33 @@
   </div>
 @endsection
 
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('.changeStatus').on('change',function(){
+            var id = $(this).data('id'); 
+
+            $.ajax({
+                url: "{{ route('admin.coupon.change_status',':id') }}".replace(':id', id),
+                type: 'PUT',
+                success: function(data){
+                    if(data.status == 'success'){
+                        toastr.success(data.message,'Success');
+                    }else if(data.status == 'error'){
+                        toastr.error(data.message,'Error');
+                    }
+
+                }
+            })
+        })
+
+        
+    })
+</script>
+@endsection

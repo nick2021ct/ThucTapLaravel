@@ -15,7 +15,7 @@ class UserAddressController extends Controller
     public function index()
     {
         $addresses = UserAddress::where('user_id', Auth::id())->get();
-        return view('user.dashboard.address.index',compact('addresses'));
+        return view('user.profile_account.address.index',compact('addresses'));
     }
 
     /**
@@ -23,7 +23,7 @@ class UserAddressController extends Controller
      */
     public function create()
     {
-        return view('user.dashboard.address.create');
+        return view('user.profile_account.address.create');
 
     }
 
@@ -75,7 +75,7 @@ class UserAddressController extends Controller
     public function edit(string $id)
     {
         $address = UserAddress::find($id);
-        return view('user.dashboard.address.edit',compact('address'));
+        return view('user.profile_account.address.edit',compact('address'));
 
     }
 

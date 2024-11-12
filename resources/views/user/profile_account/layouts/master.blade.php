@@ -53,7 +53,7 @@
   <!--=============================
     DASHBOARD START
   ==============================-->
-  @include('user.dashboard.layouts.sidebar')
+  @include('user.profile_account.layouts.sidebar')
       @yield('content')
     </div>
   </section>

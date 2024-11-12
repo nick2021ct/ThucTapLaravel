@@ -10,16 +10,6 @@ use Illuminate\Http\Request;
 
 class ProductVariantItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index($productId,$variantId)
-    {
-        $product = Product::findOrFail($productId);
-        $variant = ProductVariant::findOrFail($variantId);
-        $variantItems = ProductVariantItem::where('product_variant_id',$variantId)->paginate(5);
-        return view('admin.products.product-variant-item.index',compact('variantItems','product','variant'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -50,7 +40,7 @@ class ProductVariantItemController extends Controller
         $variantItem->save();
 
         toastr()->addSuccess('Created Successfully');
-        return redirect()->route('admin.product_variant_item.index',['productId'=>$request->product_id,'variantId'=>$request->variant_id]);
+        return to_route('admin.product_variant.index',['product'=>$request->product_id]);
     }
 
     /**
@@ -88,8 +78,8 @@ class ProductVariantItemController extends Controller
         $variantItem->save();
 
         toastr()->addSuccess(message: 'Updated Successfully');
-        return redirect()->route('admin.product_variant_item.index',['productId'
-        =>$variantItem->productVariant->product_id,'variantId'=>$variantItem->product_variant_id]);
+        return to_route('admin.product_variant.index',['product'=>$request->product_id]);
+
 
     }
 
@@ -101,7 +91,15 @@ class ProductVariantItemController extends Controller
         $variantItem = ProductVariantItem::findOrFail($id);
         $variantItem->delete();
         toastr()->addSuccess(message: 'Deleted Successfully');
-        return redirect()->route('admin.product_variant_item.index',['productId'
-        =>$variantItem->productVariant->product_id,'variantId'=>$variantItem->product_variant_id]);
+        return redirect()->back();
+
+    }
+
+    public function changeStatus($id)
+    {
+        $variantItem = ProductVariantItem::findOrFail($id);
+        $variantItem->status = $variantItem->status == 1 ? 0 : 1;
+        $variantItem->save();
+        return response(["status"=>"success","message"=>"Status changed successfully"]);
     }
 }

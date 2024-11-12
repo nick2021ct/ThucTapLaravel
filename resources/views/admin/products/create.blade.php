@@ -149,8 +149,8 @@
                               @error('long_description')
                                   <span style="color: red">{{ $message }}</span>
                               @enderror
+                             
                           </div>
-
                           <div class="mb-3">
                               <label class="form-label" for="status">Status</label>
                               <select class="form-select" id="status" name="status">
@@ -188,8 +188,14 @@
           ]
       });
   });
-      $('form').on('submit', function() {
-        $('#summernote').val($('#summernote').summernote('code'));
+    $('form').on('submit', function(e) {
+        let content = $('#summernote').summernote('code');
+        let strippedContent = content.replace(/(<([^>]+)>)/gi, "").trim();
+        if (strippedContent === '') {
+            $('#summernote').val(''); 
+        } else {
+            $('#summernote').val(content);
+        }
     });
     
 </script>

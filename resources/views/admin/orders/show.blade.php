@@ -91,8 +91,55 @@
                         </div>
                 </div>
             </div>
+            @if (isset($orderReturn) )
 
-            
+            <div class="col-sm-12 ">
+              <div class="card">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                      <h4>Product Return</h4>
+                  </div>
+                  
+                    <div class="table-responsive">
+                        <table class="table table-warning text-center">
+                            <thead>
+                                <tr class="b-b-primary">
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Variants</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Product Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              @foreach ($productReturn as $product)
+
+                              <tr class="b-b-tertiary">
+                                  <td scope="row">{{ $product->id }}</td>
+                                  <td style="width: 200px"><img src="{{ asset($product->product->thumb_image) }}" alt="" width="40%"></td>
+                                  <td>{{ $product->product->name }}</td>
+                                  <td>
+                                    @php
+                                        $product->variants = json_decode($product->variants, true);
+                                    @endphp
+                                    @foreach ($product->variants as $key => $variant)
+                                        <strong>{{ ucfirst($key) }}:</strong> {{ $variant['name'] ?? 'N/A' }}<br>
+                                    @endforeach
+                                  </td>
+                                  <td>{{ $product->quantity }}</td>
+                                  <td>{{ format_price($product->product_total) }}</td>
+                                
+                              </tr>
+                              @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                 
+
+              </div>
+          </div>
+          @endif
+
             <div class="col-sm-12">
                  
                 <div class="card">
@@ -102,7 +149,7 @@
                     </div>
                     <div class="table-responsive">
                       
-                        <table class="table text-center">
+                        <table class="table text-center table-primary">
                             <thead>
                                 <tr class="b-b-primary">
                                     <th scope="col">Id</th>
@@ -162,7 +209,7 @@
                 var status = $(this).val();
 
                 $.ajax({
-                    url: "{{ route('admin.order.change_order_status', ':id') }}".replace(':id', orderId),
+                    url: "{{ route('admin.order.change_status', ':id') }}".replace(':id', orderId),
                     type: 'PUT',
                     data: {status: status},
                     success: function(data){

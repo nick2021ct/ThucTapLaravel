@@ -47,28 +47,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label class="form-label" for="input">Quantity</label>
-                            <input class="form-control" id="input" type="number"  name="quantity" value="{{ old('quantity') }}">
-                            @error('qty')
-                                <span style="color: red">{{ $message }}</span>
-                            @enderror
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <div class="mb-3">
-                            <label class="form-label" for="input">Max use per person</label>
-                            <input class="form-control" id="input" type="number"  name="max_use" value="{{ old('max_use') }}">
-                            @error('max_use')
-                                <span style="color: red">{{ $message }}</span>
-                            @enderror
-                          </div>
-                        </div>
-                      </div>
+                    
 
                       <div class="row">
                         

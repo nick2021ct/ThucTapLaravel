@@ -7,12 +7,14 @@ use App\Models\Coupon;
 use App\Models\FlashSale;
 use App\Models\Product;
 use App\Models\ProductVariantItem;
+use App\Traits\CheckFlashSaleProduct;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
+    use CheckFlashSaleProduct;
 
     public function index()
     {
@@ -34,14 +36,9 @@ class CartController extends Controller
         foreach ($carts as $cart) {
             $product = Product::find($cart->id);
             if ($product != null) {
-                $flashSale = FlashSale::where('status', 1)->first();
-                $flashSaleProductId = $flashSale != null ? $flashSale->flashSaleItems()->pluck('product_id')->toArray() : [];
 
-                if ($flashSale != null && in_array($product->id, $flashSaleProductId)) {
-                    $price = discount_price($product->price, $flashSale->discount);
-                } else {
-                    $price = $product->price;
-                }
+                $price = $this->calculateFlashSalePrice($product);
+                
                 Cart::update($cart->rowId, ['price' => $price, 'options'  => [
                     'variants' => $cart->options->variants,
                     'image' => $product->thumb_image,
@@ -66,8 +63,8 @@ class CartController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Quantity is not availible in our stock']);
         }
 
-        $flashSale = FlashSale::where('status', 1)->first();
-        $flashSaleProductId = $flashSale != null ? $flashSale->flashSaleItems()->pluck('product_id')->toArray() : [];
+
+        $price = $this->calculateFlashSalePrice($product);
 
         $variants = [];
         if ($request->has('variants')) {
@@ -76,14 +73,11 @@ class CartController extends Controller
                 $variants[$variantItem->productVariant->name]['name'] = $variantItem->name;
             }
         }
+
         $id = $request->product_id;
         $name = $product->name;
         $qty = $request->qty;
-        if ($flashSale != null && in_array($product->id, $flashSaleProductId)) {
-            $price = discount_price($product->price, $flashSale->discount);
-        } else {
-            $price = $product->price;
-        }
+        
         $weight = 10;
         $options = [
             'variants' => $variants,
@@ -117,8 +111,8 @@ class CartController extends Controller
     public function remove_cart($rowId)
     {
         Cart::remove($rowId);
-        toastr()->addSuccess('Cart removed successfully');
-        return redirect()->back();
+        toastr()->addSuccess('cart removed successfully');
+        return response(['status'=>'success','message'=>'cart removed successfully']);
     }
 
     public function remove_all_cart()
